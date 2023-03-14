@@ -22,10 +22,6 @@ class Users::SessionsController < Devise::SessionsController
     end
 
     def log_out_failed
-        # rescue Devise::JWT::ExpiredSignature
-        #     render json:{
-        #         error: 'Token has expired'
-        #     }, status: :unauthorized
         render json:{
             error: 'Something went wrong'
         }, status: :unauthorized
