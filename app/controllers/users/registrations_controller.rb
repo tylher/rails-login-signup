@@ -6,6 +6,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def respond_with(resource, opt = {})
+    puts resource
     register_success && return if resource.persisted?
 
     register_failed(resource)
@@ -20,9 +21,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def register_failed(res)
+    if User.exists? email: res.email
+      render json: {
+               message: "user exists already, please try to login",
+             }, status: :conflict
+      return
+    end
     render json: {
-      message: "user did not create successfully",
-      error: res.error.full_message,
+      message: "user could not be created successfully",
     }, status: :unprocessable_entity
   end
 end
